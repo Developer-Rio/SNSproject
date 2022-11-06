@@ -4,27 +4,28 @@ import Link from 'next/link';
 import { useDispatch,useSelector } from 'react-redux';
 
 import useInput from '../hooks/useInput';
-import { loginRequestAction } from '../reducers/user';
+import { loginRequestAction, LOG_IN_REQUEST } from '../reducers/user';
 
 const LoginForm = () => {
-  const [id, onChangeId] = useInput('');
+  const [email, onChangeIdEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
   const dispatch = useDispatch();
-  const {isloggingIn} = useSelector((state)=>(state.user));
+  const {logInLoading} = useSelector((state)=>(state.user));
 
   const onSubmitForm = useCallback(() => {
-    dispatch(loginRequestAction({
-      id,
-      password,
-    }));
-  }, [id, password]);
+    // console.log(email,password);
+    dispatch({
+      type: LOG_IN_REQUEST,
+      data: { email, password },
+    });
+  }, [email, password]);
 
   return (
     <Form onFinish={onSubmitForm} style={{ padding: '10px' }}>
       <div>
-        <label htmlFor="user-id">아이디</label>
+        <label htmlFor="user-id">이메일</label>
         <br />
-        <Input name="user-id" value={id} onChange={onChangeId} required />
+        <Input name="user-id" value={email} onChange={onChangeIdEmail} required />
       </div>
       <div>
         <label htmlFor="user-password">비밀번호</label>
@@ -32,7 +33,7 @@ const LoginForm = () => {
         <Input name="user-password" value={password} onChange={onChangePassword} type="password" required />
       </div>
       <div style={{ marginTop: '10px' }}>
-        <Button type="primary" htmlType="submit" loading={isloggingIn}>로그인</Button>
+        <Button type="primary" htmlType="submit" loading={logInLoading}>로그인</Button>
         <Link href="/signup"><a><Button>회원가입</Button></a></Link>
       </div>
     </Form>
