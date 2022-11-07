@@ -7,8 +7,8 @@ import {LOG_OUT_FAILURE, LOG_OUT_REQUEST, LOG_OUT_SUCCESS} from '../reducers/use
 
 function* logIn(action){
     try{
-        console.log(action.data)
-        console.log('saga login')
+        // console.log(action.data)
+        // console.log('saga login')
         // const result = yield call(logInAPI,action.data);
         yield delay(1000)
         yield put({

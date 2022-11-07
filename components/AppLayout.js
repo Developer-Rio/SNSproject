@@ -45,7 +45,7 @@ const AppLayout = ({ children }) => {
           {children}
         </Col>
         <Col xs={24} md={6}>
-          <a href="https://www.zerocho.com" target="_blank" rel="noreferrer noopener">Made by ZeroCho</a>
+          <a href="https://tech-blog.tistory.com/" target="_blank" rel="noreferrer noopener">Made by RIO</a>
         </Col>
       </Row>
     </div>

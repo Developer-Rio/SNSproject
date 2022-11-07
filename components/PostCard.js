@@ -4,12 +4,13 @@ import PropTypes from 'prop-types';
 import { RetweetOutlined, HeartTwoTone, HeartOutlined, MessageOutlined, EllipsisOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import Link from 'next/link';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 
 import CommentForm from './CommentForm';
 import PostCardContent from './PostCardContent';
 import PostImages from './PostImages';
 import FollowButton from './FollowButton';
+import { REMOVE_POST_REQUEST } from '../reducers/post';
 
 const CardWrapper = styled.div`
   margin-bottom: 20px;
@@ -18,7 +19,7 @@ const CardWrapper = styled.div`
 const PostCard = ({ post }) => {
   const [commentFormOpened, setCommentFormOpened] = useState(false);
   const id = useSelector((state) => state.user.me && state.user.me.id);
-
+  const dispatch = useDispatch();
   const [liked, setLiked] = useState(false);
 
   const onToggleLike = useCallback(() => {
@@ -28,7 +29,12 @@ const PostCard = ({ post }) => {
   const onToggleComment = useCallback(() => {
     setCommentFormOpened((prev) => !prev);
   }, []);
-
+  const onRemovePost = useCallback(() => {
+    console.log(post.id)
+    dispatch({type : REMOVE_POST_REQUEST,
+      data : post.id
+    })
+  },[])
   return (
     <CardWrapper key={post.id}>
       <Card
@@ -47,7 +53,7 @@ const PostCard = ({ post }) => {
                   ? (
                     <>
                       <Button>수정</Button>
-                      <Button type="danger">삭제</Button>
+                      <Button type="danger" onClick={onRemovePost}>삭제</Button>
                     </>
                   )
                   : <Button>신고</Button>}
@@ -94,7 +100,7 @@ const PostCard = ({ post }) => {
 
 PostCard.propTypes = {
   post: PropTypes.shape({
-    id: PropTypes.number,
+    // id: PropTypes.number,
     User: PropTypes.object,
     content: PropTypes.string,
     createdAt: PropTypes.object,

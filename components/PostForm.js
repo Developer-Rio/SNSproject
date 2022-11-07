@@ -26,7 +26,7 @@ const PostForm = () => {
 
   const onSubmitForm = useCallback(() => {
     dispatch(addPost(text));
-    console.log(text);
+    // console.log(text);
   }, [text]);
 
   return (

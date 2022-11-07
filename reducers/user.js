@@ -2,10 +2,10 @@ const dummyUser = (data) =>{
   return {
   ...data,
   nickname : 'chang',
-  id : 1,
-  Posts: [],
-  Followings : [],
-  Followers : []
+  id : 1, //내 id임
+  Posts: [{id : 1}], //여기 id는 게시글 id임
+  Followings : [{nickname : '부기초'},{nickname : '부기초'},{nickname : '부기초'}],
+  Followers : [{nickname : '부기초'},{nickname : '부기초'},{nickname : '부기초'}]
 }};
 
 export const initialState = {
@@ -53,6 +53,11 @@ export const UNFOLLOW_FAILURE = 'UNFOLLOW_FAILURE';
 export const CHANGE_NICKNAME_REQUEST = 'CHANGE_NICKNAME_REQUEST'; 
 export const CHANGE_NICKNAME_SUCCESS = 'CHANGE_NICKNAME_SUCCESS'; 
 export const CHANGE_NICKNAME_FAILURE = 'CHANGE_NICKNAME_FAILURE'; 
+
+export const ADD_POST_TO_ME = 'ADD_POST_TO_ME'; //게시글 추가 할때 나한테 반영하는 액션
+export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME'; //게시글 제거할때 나한테 반영하는 액션
+
+
 
 export const loginRequestAction = (data) =>{
   return {
@@ -158,6 +163,25 @@ export default (state = initialState, action) => {
         ...state,
         changeNicknameLoading: false,
         changeNicknameError: action.error,
+      };
+    }
+
+    case ADD_POST_TO_ME: {
+      return {
+        ...state,
+        me : {
+          ...state.me,
+          Posts : [{id : action.data}, ...state.me.Posts],
+        }
+      };
+    }
+    case REMOVE_POST_OF_ME: {
+      return {
+        ...state,
+        me : {
+          ...state.me,
+          Posts : state.me.Posts.filter((v) => v.id !== action.data),
+        }
       };
     }
     default: {
