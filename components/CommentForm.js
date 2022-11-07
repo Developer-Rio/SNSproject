@@ -3,15 +3,15 @@ import React, { useCallback, useState,useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { ADD_COMMENT_REQUEST } from '../reducers/post';
 import { useDispatch, useSelector } from 'react-redux';
-
+import useInput from '../hooks/useInput';
 const CommentForm = ({ post }) => {
   const id = useSelector((state) => state.user.me?.id);
   const {addCommentDone} = useSelector((state) => state.post);
-  const [commentText, setCommentText] = useState('');
+  const [commentText, onChangeCommentText ,setCommentText] = useInput('');
   const dispatch = useDispatch()
   useEffect(() => {
     if (addCommentDone) {
-      setText('');
+      setCommentText('');
     }
   }, [addCommentDone]);
 
@@ -22,10 +22,6 @@ const CommentForm = ({ post }) => {
       data : {content : commentText, postId : post.id, userId ,id}
     })
   }, [commentText]);
-
-  const onChangeCommentText = useCallback((e) => {
-    setCommentText(e.target.value);
-  }, []);
 
   return (
     <Form onFinish={onSubmitComment}>

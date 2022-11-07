@@ -1,4 +1,6 @@
-import React, { useCallback, useState, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
+import useInput from '../hooks/useInput';
+
 import { Form, Input, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -6,7 +8,7 @@ import { ADD_POST_REQUEST } from '../reducers/post';
 
 const PostForm = () => {
   const dispatch = useDispatch();
-  const [text, setText] = useState('');
+  const [text, onChangeText ,setText] = useInput('');
   const { imagePaths, addPostLoading, addPostDone } = useSelector((state) => state.post);
 
   const imageInput = useRef();
@@ -28,10 +30,6 @@ const PostForm = () => {
     });
     console.log(text);
   }, [text]);
-
-  const onChangeText = useCallback((e) => {
-    setText(e.target.value);
-  }, []);
 
   return (
     <Form style={{ margin: '10px 0 20px' }} encType="multipart/form-data" onFinish={onSubmitForm}>
