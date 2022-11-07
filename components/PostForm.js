@@ -4,7 +4,8 @@ import useInput from '../hooks/useInput';
 import { Form, Input, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { ADD_POST_REQUEST } from '../reducers/post';
+import { ADD_POST_REQUEST,addPost } from '../reducers/post';
+
 
 const PostForm = () => {
   const dispatch = useDispatch();
@@ -24,10 +25,7 @@ const PostForm = () => {
   }, [addPostDone]);
 
   const onSubmitForm = useCallback(() => {
-    dispatch({
-      type: ADD_POST_REQUEST,
-      data: text,
-    });
+    dispatch(addPost(text));
     console.log(text);
   }, [text]);
 

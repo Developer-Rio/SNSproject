@@ -1,3 +1,4 @@
+import shortId from 'shortid';
 export const initialState = {
   mainPosts: [{
     id: 1,
@@ -26,16 +27,19 @@ export const initialState = {
     }]
   }],
   imagePaths: [],
+
   addPostLoading: false,
   addPostDone: false,
   addPostError: null,
 
+  addCommentLoading: false,
+  addCommentDone: false,
+  addCommentError: null,
+
 };
 const dummyPost =(data)=> {
-  console.log(data);
-  console.log('dummy')
   return {
-  id: 2,
+  id: shortId.generate(), //key값이 다 2이면 문제가 된다.
   content: data,
   User: {
     id: 1,
@@ -44,7 +48,15 @@ const dummyPost =(data)=> {
   Images: [],
   Comments: [],
 }};
+const dummyComment = (data) =>({
+  id : shortId.generate(),
+  content : data,
+  User : {
+    id : 1,
+    nickname : 'suchang'
+  }
 
+})
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST'; 
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS'; 
 export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
@@ -52,6 +64,7 @@ export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
 export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST'; 
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS'; 
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE'; 
+
 export const addPost =(data)=> ({
   type: ADD_POST_REQUEST,
   data
@@ -97,10 +110,16 @@ export default (state = initialState, action) => {
       };
     }
     case ADD_COMMENT_SUCCESS: {
+      const postIndex = state.mainPosts.findIndex((v) => v.id === action.data.postId);
+      const post = { ...state.mainPosts[postIndex] };
+      post.Comments = [dummyComment(action.data.content), ...post.Comments];
+      const mainPosts = [...state.mainPosts];
+      mainPosts[postIndex] = post;
       return {
         ...state,
+        mainPosts,
         addCommentLoading: false,
-        addCommentDone : true
+        addCommentDone: true,
       };
     }
     case ADD_COMMENT_FAILURE: {
